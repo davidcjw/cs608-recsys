@@ -1,0 +1,5 @@
+numpy==1.18.1
+spacy==2.2.4
+pandas==1.0.1
+streamlit==0.61.0
+cornac==1.5.1
