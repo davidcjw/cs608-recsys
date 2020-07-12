@@ -44,24 +44,39 @@ def get_recommendations(model, userid, comics_df, k=10):
 
 
 comics_df = load_object("assets/book_titles_mapping.pkl")
-weights = load_object("assets/2020-07-12_12-42-45-810642.pkl")
+model = load_object("assets/2020-07-12_12-42-45-810642.pkl")
 dataset_map = load_object("assets/dict_map.pkl")
 
-weights.train_set = dataset_map
+model.train_set = dataset_map
+all_users = list(model.train_set.uid_map.keys())
 
+if __name__ == "__main__":
+    "# GoodReads Recommendations"
+    results = st.empty()
+    user = st.sidebar.text_input("Please select user_id:")
+    random = st.button("Generate random user recommendation")
 
-# Start of UI
-"# GoodReads Recommendations"
-
-user = st.sidebar.text_input("Please select user_id:")
-
-if not user:
-    st.warning("You have not selected a user_id!")
-else:
-    st.success("Getting recommendations for user " + str(user))
-    recs = get_recommendations(weights, user, comics_df)
-    df = pd.DataFrame({
-        "ID": [i+1 for i in range(len(recs))],
-        "Recommendations": recs
-    })
-    df
+    if random:
+        random_user = np.random.choice(all_users)
+        results.success(
+            "Getting recommendations for user " + str(random_user))
+        recs = get_recommendations(model, random_user, comics_df)
+        df = pd.DataFrame({
+            "ID": [i+1 for i in range(len(recs))],
+            "Recommendations": recs
+        })
+        df
+    elif user:
+        if user in all_users:
+            results.success(
+                "Getting recommendations for user " + str(user))
+            recs = get_recommendations(model, user, comics_df)
+            df = pd.DataFrame({
+                "ID": [i+1 for i in range(len(recs))],
+                "Recommendations": recs
+            })
+            df
+        else:
+            results.warning("Invalid user!")
+    else:
+        results.info("You have not selected a user_id!")
