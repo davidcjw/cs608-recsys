@@ -1,7 +1,16 @@
 import numpy as np
+import pandas as pd
+import pickle
 
 import cornac
 import streamlit as st
+
+def load_object(filename):
+    """
+    Load a pickled object
+    """
+    with open(filename, "rb") as f:
+        return pickle.load(f)
 
 def get_title_info(comics_df, book_ids: list):
     """
@@ -34,12 +43,25 @@ def get_recommendations(model, userid, comics_df, k=10):
     return get_title_info(comics_df, top_k_recs)
 
 
+comics_df = load_object("assets/book_titles_mapping.pkl")
+weights = load_object("assets/2020-07-12_12-42-45-810642.pkl")
+dataset_map = load_object("assets/dict_map.pkl")
+
+weights.train_set = dataset_map
+
+
 # Start of UI
-"# Book Recommendations"
+"# GoodReads Recommendations"
 
 user = st.sidebar.text_input("Please select user_id:")
 
 if not user:
     st.warning("You have not selected a user_id!")
 else:
-    st.success("Getting recommendations for " + str(user))
+    st.success("Getting recommendations for user " + str(user))
+    recs = get_recommendations(weights, user, comics_df)
+    df = pd.DataFrame({
+        "ID": [i+1 for i in range(len(recs))],
+        "Recommendations": recs
+    })
+    df
