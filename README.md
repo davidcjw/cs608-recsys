@@ -21,8 +21,16 @@ cd cs608-recsys
 pip install -r requirements.txt
 ```
 
-5. Run streamlit app
+### Deploy Application
+1. Run streamlit app locally
 
 ```
 streamlit run app.py
+```
+
+2. Deploy streamlit app on Heroku
+```
+heroku login
+heroku create <project name>
+git push heroku master
 ```
