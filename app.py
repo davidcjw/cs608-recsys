@@ -326,7 +326,7 @@ if __name__ == "__main__":
     # Set styles
     select_block_container_style()
 
-    st.image("/Users/davidchong/Desktop/banner 2.jpg", width=1370)
+    st.image("assets/banner.jpg", width=1370)
     st.write("## 📚 **GoodReads** Comic *Recommendations*")
 
     # Grid starts here
