@@ -1,6 +1,8 @@
 # cs608-recsys
 Repo for CS608 - Recommender System (Project 2)
 
+![Demo]("assets/streamlit-demo.gif")
+
 ## Setup
 1. Clone repo
 
